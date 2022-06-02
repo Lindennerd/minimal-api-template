@@ -1,0 +1,27 @@
+{
+  "name": "sua-mesa-2",
+  "version": "1.0.0",
+  "description": "",
+  "port": "3000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon bin/run | bunyan",
+    "start": "node bin/run | bunyan -o short",
+    "doc": "node ./server/swagger.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bunyan": "^1.8.15",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "swagger-autogen": "^2.21.2",
+    "swagger-ui-express": "^4.4.0"
+  }
+}
