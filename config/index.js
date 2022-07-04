@@ -11,12 +11,14 @@ const { name, version, port } = pjs;
 const getLogger = (serviceName, serviceVersion, level) => bunyan.createLogger({ name: `${serviceName}:${serviceVersion}`, level });
 
 // Configuration options for different environments
-module.exports = {
+const config = {
   development: {
     name,
     version,
     port,
     serviceTimeout: 30,
+    database: 'mongodb://localhost:27017/what-am-i-reading',
+    secret: 'dev-secret',
     log: () => getLogger(name, version, 'debug'),
 
   },
@@ -36,3 +38,5 @@ module.exports = {
     log: () => getLogger(name, version, 'fatal'),
   },
 };
+
+module.exports = config[process.env.NODE_ENV || 'development'];

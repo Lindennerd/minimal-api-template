@@ -10,9 +10,9 @@ const doc = {
     schemes: ['http']
 };
 
-const outputFile = './server/swagger-output.json';
+const outputFile = './src/swagger-output.json';
 const entry = [
-    './server/service.js'
+    './src/service.js'
 ]
 
 swaggerAutoGen(outputFile, entry, doc);
