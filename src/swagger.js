@@ -1,5 +1,5 @@
 const swaggerAutoGen = require('swagger-autogen')();
-const config = require('../config')[process.env.NODE_ENV || 'development'];
+const config = require('../config')
 
 const doc = {
     info: {

@@ -34,6 +34,8 @@ const config = {
     name,
     version,
     port,
+    database: 'mongodb://localhost:27017/what-am-i-reading',
+    secret: 'dev-secret',
     serviceTimeout: 30,
     log: () => getLogger(name, version, 'fatal'),
   },
