@@ -32,6 +32,7 @@ module.exports = (config) => {
   });
 
   service.use(cors());
+  service.use(express.json());
 
   service.use('/api', routes);
   service.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
