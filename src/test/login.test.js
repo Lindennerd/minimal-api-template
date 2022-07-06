@@ -7,7 +7,7 @@ describe('# Login', () => {
 
     let userId = null;
 
-    beforeEach(async () => {
+    before(async () => {
         const userModel = require('../database/models/user');
 
         const testUser = new userModel({
@@ -19,7 +19,7 @@ describe('# Login', () => {
         userId = testUser._id;
     });
 
-    afterEach(async () => {
+    after(async () => {
         const userModel = require('../database/models/user');
         const mongoose = require('mongoose');
         await userModel.deleteOne({ id: userId });
@@ -36,12 +36,37 @@ describe('# Login', () => {
                     'email': 'luiz@gmail.com',
                     'password': '123456'
                 });
-            
+
             assert.equal(response.status, 200, 'response status is 200');
-            assert.equal(respomse.body.success, true, 'response body indicates success');
+            assert.equal(response.body.success, true, 'response body indicates success');
             assert.notEqual(response.body.token, null, 'response body contains a token');
             assert.notEqual(response.body.user, null, 'response body user definition');
+        });
+
+        it('not exposes user password', async () => {
+            const response = await request(service)
+                .post('/api/security/login')
+                .send({
+                    'email': 'luiz@gmail.com',
+                    'password': '123456'
+                });
+
             assert.equal(response.body.user.password, null, 'response body does not exposes user password');
         })
+
+        it('refuse auth when invalid credential is provided', async () => {
+            const response = await request(service)
+                .post('/api/security/login')
+                .send({
+                    'email': 'luiz@gmail.com',
+                    'password': '789964'
+                });
+
+            assert.equal(response.status, 400, 'response status is 400');
+            assert.equal(response.body.success, false, 'response body indicates success');
+            assert.equal(response.body.token, null, 'response body contains a token');
+            assert.equal(response.body.user, null, 'response body user definition');
+        })
+
     })
 })
