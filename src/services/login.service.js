@@ -6,8 +6,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
     async login(email, password) {
         const user = await userModel.findOne({ email });
-        const salt = bcrypt.genSaltSync(10);
-        if (user && user.password === bcrypt.hashSync(password, salt)) {
+        if (user && bcrypt.compareSync(password, user.password)) {
             const token = jwt.sign({ _id: user._id }, config.secret);
             return {
                 success: true,

@@ -4,6 +4,30 @@ const request = require('supertest');
 const assert = require('assert');
 
 describe('# Login', () => {
+
+    let userId = null;
+
+    beforeEach(async () => {
+        const userModel = require('../database/models/user');
+
+        const testUser = new userModel({
+            email: 'luiz@gmail.com',
+            password: '123456'
+        });
+
+        await testUser.save();
+        userId = testUser._id;
+    });
+
+    afterEach(async () => {
+        const userModel = require('../database/models/user');
+        const mongoose = require('mongoose');
+        await userModel.deleteOne({ id: userId });
+
+        mongoose.connection.close();
+
+    })
+
     describe('# POST Login should', () => {
         it('be able to get an token when valid credentials are provided', async () => {
             const response = await request(service)
