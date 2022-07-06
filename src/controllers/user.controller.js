@@ -1,4 +1,4 @@
-import { findAll, create } from '../services/user.service.js';
+import { findAll, create, validate, validatePassword} from '../services/user.service.js';
 
 export async function findAllUsers(req, res) {
     return await findAll();
@@ -29,13 +29,14 @@ export function validateUser(req, res, next) {
         email
     } = req.body;
 
-    if (!user.name || !user.email || !user.password)
+    if (validate(user.name, user.email, user.password)) {
         return res
             .status(400)
             .json({
                 success: false,
                 msg: 'There are required fields empty'
             });
+    }
     else {
         req.body.user = user;
         return next();
@@ -43,12 +44,13 @@ export function validateUser(req, res, next) {
 }
 
 export function validatePasswordMatch(req, res, next) {
-    if (req.body.user.password !== req.body.user.passwordConfirmation)
+    if (validatePassword(req.body.user.password, req.body.user.passwordConfirmation))
+        return next();
+    else
         return res
             .status(400)
             .json({
                 success: false,
                 msg: 'Password and password confirmation don\'t match'
             });
-    else return next();
 }

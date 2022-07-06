@@ -6,7 +6,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=text mocha ./src/test",
+    "test": "cross-env NODE_ENV=test nyc --reporter=text mocha ./src/test/**/*.test.js",
+    "test:unit": "cross-env NODE_ENV=test nyc --reporter=text mocha ./src/test/unit/*.test.js",
+    "test:integration": "cross-env NODE_ENV=test nyc --reporter=text mocha ./src/test/integration/*.test.js",
     "dev": "npm run doc & nodemon bin/run | bunyan",
     "start": "cross-env NODE_ENV=production node bin/run | bunyan -o short",
     "doc": "node ./src/swagger.js"

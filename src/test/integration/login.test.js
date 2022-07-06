@@ -1,15 +1,15 @@
-const config = require('../../config/index.js/index.cjs.js');
-const service = require('../service')(config);
-const request = require('supertest');
-const assert = require('assert');
+import config from '../../../config/index.js';
+import service from '../../service.js';
+import supertest from 'supertest';
+import assert from 'assert';
+import userModel from '../../database/models/user.model.js';
+import mongoose from 'mongoose';
 
-describe('# Login', () => {
+describe('Integration - Login', () => {
 
     let userId = null;
 
     before(async () => {
-        const userModel = require('../database/models/user');
-
         const testUser = new userModel({
             email: 'luiz@gmail.com',
             password: '123456'
@@ -20,17 +20,13 @@ describe('# Login', () => {
     });
 
     after(async () => {
-        const userModel = require('../database/models/user');
-        const mongoose = require('mongoose');
         await userModel.deleteOne({ id: userId });
-
         mongoose.connection.close();
-
     })
 
     describe('# POST Login should', () => {
         it('be able to get an token when valid credentials are provided', async () => {
-            const response = await request(service)
+            const response = await supertest(service(config))
                 .post('/api/security/login')
                 .send({
                     'email': 'luiz@gmail.com',
@@ -44,7 +40,7 @@ describe('# Login', () => {
         });
 
         it('not exposes user password', async () => {
-            const response = await request(service)
+            const response = await supertest(service(config))
                 .post('/api/security/login')
                 .send({
                     'email': 'luiz@gmail.com',
@@ -55,7 +51,7 @@ describe('# Login', () => {
         })
 
         it('refuse auth when invalid credential is provided', async () => {
-            const response = await request(service)
+            const response = await supertest(service(config))
                 .post('/api/security/login')
                 .send({
                     'email': 'luiz@gmail.com',
