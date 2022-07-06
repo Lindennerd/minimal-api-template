@@ -4,6 +4,7 @@
   "description": "",
   "port": "3000",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha ./src/test",
     "dev": "npm run doc & nodemon bin/run | bunyan",

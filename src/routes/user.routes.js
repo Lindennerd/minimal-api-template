@@ -1,12 +1,12 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+const userRoutes = express.Router();
 
-const userController = require('../controllers/user.controller');
+import { findAllUsers, validateUser, validatePasswordMatch, createUser } from '../controllers/user.controller.js';
 
-router.get('/', userController.findAll);
-router.post('/',
-    userController.validateUser,
-    userController.validatePasswordMatch,
-    userController.create);
+userRoutes.get('/', findAllUsers);
+userRoutes.post('/',
+    validateUser,
+    validatePasswordMatch,
+    createUser);
 
-module.exports = router;
+export default userRoutes;

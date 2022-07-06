@@ -1,11 +1,6 @@
-const userModel = require('../database/models/user.model');
+import userModel from '../database/models/user.model.js';
 
-module.exports = {
-    async findAll() {
-
-    },
-
-    async create(user) {
-        return await userModel.create(user);
-    }
+export async function findAll() { }
+export async function create(user) { 
+    return await userModel.create(user);
 }

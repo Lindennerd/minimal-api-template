@@ -1,14 +1,17 @@
-const express = require('express');
+import express from 'express';
+import { serve, setup } from 'swagger-ui-express';
+import cors from 'cors';
+import { createRequire } from 'module';
 
-const swaggerUi = require('swagger-ui-express');
+import routes from './routes/index.js';
+
+const require = createRequire(import.meta.url);
 const swaggerFile = require('./swagger-output.json');
 
-const cors = require('cors');
 
 const service = express();
-const routes = require('./routes');
 
-module.exports = (config) => {
+export default (config) => {
   
   const log = config.log();
   // Add a request logging middleware in development mode
@@ -35,7 +38,7 @@ module.exports = (config) => {
   service.use(express.json());
 
   service.use('/api', routes);
-  service.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+  service.use('/doc', serve, setup(swaggerFile));
 
   return service;
 };

@@ -1,5 +1,5 @@
-const config = require('../../config');
-const mongoose = require('mongoose');
+import config from '../../config/index.js';
+import mongoose from 'mongoose';
 
 const log = config.log();
 
@@ -12,4 +12,4 @@ mongoose.connection.once('open', function () {
 
 mongoose.set('debug', (process.env.NODE_ENV || 'development') === 'development');
 
-module.exports = mongoose;
+export default mongoose;

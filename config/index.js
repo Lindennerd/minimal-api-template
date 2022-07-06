@@ -1,16 +1,10 @@
-const path = require('path');
+import { createLogger } from 'bunyan';
+import { createRequire } from 'module';
 
-const bunyan = require('bunyan');
-// Load package.json
-const pjs = require('../package.json');
+const require = createRequire(import.meta.url);
+const { name, version, port } = require('../package.json');
+const getLogger = (serviceName, serviceVersion, level) => createLogger({ name: `${serviceName}:${serviceVersion}`, level });
 
-// Get some meta info from the package.json
-const { name, version, port } = pjs;
-
-// Set up a logger
-const getLogger = (serviceName, serviceVersion, level) => bunyan.createLogger({ name: `${serviceName}:${serviceVersion}`, level });
-
-// Configuration options for different environments
 const config = {
   development: {
     name,
@@ -41,4 +35,4 @@ const config = {
   },
 };
 
-module.exports = config[process.env.NODE_ENV || 'development'];
+export default config[process.env.NODE_ENV || 'development'];

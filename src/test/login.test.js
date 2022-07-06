@@ -1,4 +1,4 @@
-const config = require('../../config');
+const config = require('../../config/index.js/index.cjs.js');
 const service = require('../service')(config);
 const request = require('supertest');
 const assert = require('assert');

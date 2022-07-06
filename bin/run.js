@@ -1,13 +1,12 @@
 #!/usr/bin/env node
+import {createServer} from 'http';
 
-const http = require('http');
-
-const config = require('../config');
+import config from '../config/index.js';
 
 const log = config.log();
-const service = require('../src/service')(config);
+import service from '../src/service.js';
 
-const server = http.createServer(service);
+const server = createServer(service(config));
 
 // Important - a service should not have a fixed port but should randomly choose one
 server.listen(config.port);

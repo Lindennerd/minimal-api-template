@@ -1,56 +1,54 @@
-const userService = require('../services/user.service');
+import { findAll, create } from '../services/user.service.js';
 
-module.exports = {
-    async findAll(req, res, next) {
-        return await userService.findAll();
-    },
+export async function findAllUsers(req, res) {
+    return await findAll();
+}
 
-    async create(req, res, next) {
-        const user = await userService.create(req.body.user)
-            .catch(err => {
-                return res
-                    .status(400)
-                    .json({
-                        success: false,
-                        msg: err
-                    });
-            });
-        
-        return res.json({
-            success: true,
-            user
+export async function createUser(req, res, next) {
+    const user = await create(req.body.user)
+        .catch(err => {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    msg: err
+                });
         });
-    },
 
-    validateUser(req, res, next) {
-        const user = {
-            name,
-            password,
-            passwordConfirmation,
-            email
-        } = req.body;
+    return res.json({
+        success: true,
+        user
+    });
+}
 
-        if (!user.name || !user.email || !user.password)
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    msg: 'There are required fields empty'
-                });
-        else {
-            req.body.user = user;
-            return next();
-        }
-    },
+export function validateUser(req, res, next) {
+    const user = {
+        name,
+        password,
+        passwordConfirmation,
+        email
+    } = req.body;
 
-    validatePasswordMatch(req, res, next) {
-        if (req.body.user.password !== req.body.user.passwordConfirmation)
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    msg: 'Password and password confirmation don\'t match'
-                });
-        else return next();
+    if (!user.name || !user.email || !user.password)
+        return res
+            .status(400)
+            .json({
+                success: false,
+                msg: 'There are required fields empty'
+            });
+    else {
+        req.body.user = user;
+        return next();
     }
+}
+
+export function validatePasswordMatch(req, res, next) {
+    if (req.body.user.password !== req.body.user.passwordConfirmation)
+        return res
+            .status(400)
+            .json({
+                success: false,
+                msg: 'Password and password confirmation don\'t match'
+            });
+    else return next();
 }
