@@ -1,15 +1,21 @@
-import mongoose from '../index.js';
+import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-const userSchema = new mongoose.Schema({
+export interface IUser {
+    name: string;
+    password: string;
+    email: string;
+    createdAt: Date;
+}
+
+const userSchema = new Schema<IUser>({
     name: String,
     password: String,
     email: String,
     createdAt: {
         type: Date,
         default: new Date()
-    },
-    //Readings: [{type: mongoose.Schema.Types.ObjectId, ref: 'Reading' }]
+    }
 });
 
 userSchema.pre('save', function(next) {
@@ -19,4 +25,4 @@ userSchema.pre('save', function(next) {
     next();
 })
 
-export default mongoose.model('User', userSchema, 'User');
+export default model('User', userSchema, 'User');

@@ -1,6 +1,7 @@
-import {login} from '../services/login.service.js';
+import { login } from '../services/login.service.js';
+import { Request, Response } from 'express';
 
-export async function loginUser(req, res) { 
+export async function loginUser(req: Request, res: Response) { 
     const {email, password} = req.body;
     if(!email || !password) 
         return res

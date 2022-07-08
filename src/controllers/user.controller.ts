@@ -1,10 +1,13 @@
-import { findAll, create, validate, validatePassword} from '../services/user.service.js';
+import { findAll, create, validate, validatePassword } from '../services/user.service';
+import { Request, Response, NextFunction } from 'express';
+import { UserRequest } from '../viewModels/UserRequest';
 
-export async function findAllUsers(req, res) {
+
+export async function findAllUsers(req: Request, res: Response) {
     return await findAll();
 }
 
-export async function createUser(req, res, next) {
+export async function createUser(req: Request, res: Response) {
     const user = await create(req.body.user)
         .catch(err => {
             return res
@@ -21,15 +24,8 @@ export async function createUser(req, res, next) {
     });
 }
 
-export function validateUser(req, res, next) {
-    const user = {
-        name,
-        password,
-        passwordConfirmation,
-        email
-    } = req.body;
-
-    if (validate(user.name, user.email, user.password)) {
+export function validateUser(req: Request<{}, {}, UserRequest>, res: Response, next: NextFunction) {
+    if (validate(req.body.name, req.body.email, req.body.password)) {
         return res
             .status(400)
             .json({
@@ -38,13 +34,12 @@ export function validateUser(req, res, next) {
             });
     }
     else {
-        req.body.user = user;
         return next();
     }
 }
 
-export function validatePasswordMatch(req, res, next) {
-    if (validatePassword(req.body.user.password, req.body.user.passwordConfirmation))
+export function validatePasswordMatch(req: Request<{}, {}, UserRequest>, res: Response, next: NextFunction) {
+    if (validatePassword(req.body.password, req.body.passwordConfirmation))
         return next();
     else
         return res

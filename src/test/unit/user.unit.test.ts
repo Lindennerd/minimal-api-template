@@ -1,6 +1,5 @@
-import { validate, validatePassword } from '../../services/user.service.js';
+import { validate, validatePassword } from '../../services/user.service';
 import assert from 'assert';
-
 
 describe('Unit - User validation', () => {
     it('name, email and password are required', () => {

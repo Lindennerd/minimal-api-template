@@ -1,13 +1,12 @@
-import config from '../../../config/index.js';
-import service from '../../service.js';
+import service from '../../service';
 import supertest from 'supertest';
 import assert from 'assert';
-import userModel from '../../database/models/user.model.js';
+import userModel from '../../database/models/user.model';
 import mongoose from 'mongoose';
 
 describe('Integration - Login', () => {
 
-    let userId = null;
+    let userId: mongoose.Types.ObjectId | null = null;
 
     before(async () => {
         const testUser = new userModel({
@@ -26,7 +25,7 @@ describe('Integration - Login', () => {
 
     describe('# POST Login should', () => {
         it('be able to get an token when valid credentials are provided', async () => {
-            const response = await supertest(service(config))
+            const response = await supertest(service)
                 .post('/api/security/login')
                 .send({
                     'email': 'luiz@gmail.com',
@@ -40,7 +39,7 @@ describe('Integration - Login', () => {
         });
 
         it('not exposes user password', async () => {
-            const response = await supertest(service(config))
+            const response = await supertest(service)
                 .post('/api/security/login')
                 .send({
                     'email': 'luiz@gmail.com',
@@ -51,7 +50,7 @@ describe('Integration - Login', () => {
         })
 
         it('refuse auth when invalid credential is provided', async () => {
-            const response = await supertest(service(config))
+            const response = await supertest(service)
                 .post('/api/security/login')
                 .send({
                     'email': 'luiz@gmail.com',
